@@ -1,8 +1,6 @@
 package com.agitex.paymentservice.model;
 
 public enum PaymentMethod {
-    CARD,
-    BANK_TRANSFER,
-    PAYPAL,
-    CASH
+    WAVE,
+    ORANGE_MONEY,
 }

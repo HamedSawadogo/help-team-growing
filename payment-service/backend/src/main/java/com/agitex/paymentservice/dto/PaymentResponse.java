@@ -22,8 +22,8 @@ public record PaymentResponse(
     public static PaymentResponse from(Payment payment) {
         return new PaymentResponse(
                 payment.getId(),
-                payment.getClient().getId(),
-                payment.getClient().getFirstName() + " " + payment.getClient().getLastName(),
+                payment.getClient() != null ? payment.getClient().getId() :  null,
+                payment.getClient() != null ? payment.getClient().getFirstName() + " " + payment.getClient().getLastName() : "",
                 payment.getAmount(),
                 payment.getCurrency(),
                 payment.getMethod(),

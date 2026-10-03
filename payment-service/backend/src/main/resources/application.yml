@@ -11,9 +11,9 @@ spring:
     password: payment_password
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 2
+      maximum-pool-size: 100
       minimum-idle: 1
-      connection-timeout: 3000
+      connection-timeout: 10000
       validation-timeout: 1000
       idle-timeout: 10000
       leak-detection-threshold: 2000

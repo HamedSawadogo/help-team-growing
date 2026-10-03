@@ -2,76 +2,66 @@ package com.agitex.paymentservice.service;
 
 import com.agitex.paymentservice.dto.PaymentRequest;
 import com.agitex.paymentservice.dto.PaymentResponse;
-import com.agitex.paymentservice.exception.InvalidPaymentStateException;
-import com.agitex.paymentservice.exception.ResourceNotFoundException;
-import com.agitex.paymentservice.model.Client;
 import com.agitex.paymentservice.model.Payment;
-import com.agitex.paymentservice.model.PaymentStatus;
 import com.agitex.paymentservice.repository.PaymentRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final ClientService clientService;
 
-    public PaymentResponse createPayment(PaymentRequest request) {
-       return null;
+    private final List<PaymentGateway> paymentProviders;
+
+    private final PaymentGatewayRegistry paymentGatewayRegistry;
+
+    public PaymentService(PaymentRepository paymentRepository,
+                          List<PaymentGateway> paymentProviders,
+                          PaymentGatewayRegistry paymentGatewayRegistry) {
+        this.paymentRepository = paymentRepository;
+        this.paymentProviders = paymentProviders;
+        this.paymentGatewayRegistry = paymentGatewayRegistry;
     }
 
-    @Transactional(readOnly = true)
-    public List<PaymentResponse> getAllPayments() {
-        return paymentRepository.findAll().stream()
-                .map(PaymentResponse::from)
-                .toList();
-    }
 
-    @Transactional(readOnly = true)
-    public List<PaymentResponse> getPaymentsByClient(Long clientId) {
-//        clientService.findClientOrThrow(clientId);
-//        return paymentRepository.findByClientIdOrderByCreatedAtDesc(clientId).stream().map(PaymentResponse::from)
-//                .toList();
-        return null;
-    }
-
-    @Transactional(readOnly = true)
-    public PaymentResponse getPaymentById(Long id) {
-        return PaymentResponse.from(findPaymentOrThrow(id));
-    }
-
-    public PaymentResponse processPayment(Long id) {
-        Payment payment = findPaymentOrThrow(id);
-        if (payment.getStatus() != PaymentStatus.PENDING) {
-            throw new InvalidPaymentStateException(
-                    "Seul un paiement PENDING peut être traité (statut actuel : " + payment.getStatus() + ")");
+    @Transactional
+    public PaymentResponse makePayment(final PaymentRequest paymentRequest) {
+        //TODO should be locked
+        final Optional<Payment> paymentOptional = paymentRepository.findByIdempotencyKey(paymentRequest.idempotencyKey());
+        if (paymentOptional.isPresent()) {
+            return  PaymentResponse.from(paymentOptional.get());
         }
-        boolean simulatedFailure = payment.getAmount().remainder(BigDecimal.valueOf(100))
-                .compareTo(BigDecimal.ZERO) == 0;
-        payment.setStatus(simulatedFailure ? PaymentStatus.FAILED : PaymentStatus.COMPLETED);
-        return PaymentResponse.from(paymentRepository.save(payment));
-    }
+        validatePaymentRequest(paymentRequest);
 
-    public PaymentResponse refundPayment(Long id) {
-        Payment payment = findPaymentOrThrow(id);
-        if (payment.getStatus() != PaymentStatus.COMPLETED) {
-            throw new InvalidPaymentStateException(
-                    "Seul un paiement COMPLETED peut être remboursé (statut actuel : " + payment.getStatus() + ")");
+        try {
+
+            //final PaymentGateway paymentGateway = resolvePaymentGateway(paymentRequest);
+            final Payment payment = paymentGatewayRegistry.get(paymentRequest.method()).pay(paymentRequest);
+
+            paymentRepository.save(payment);
+            return PaymentResponse.from(payment);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        payment.setStatus(PaymentStatus.REFUNDED);
-        return PaymentResponse.from(paymentRepository.save(payment));
+
     }
 
-    @Transactional(readOnly = true)
-    public Payment findPaymentOrThrow(Long id) {
-        return paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Paiement introuvable avec l'id " + id));
+//    private PaymentGateway resolvePaymentGateway(PaymentRequest paymentRequest) {
+//        return paymentProviders.stream()
+//                 .filter(provider -> provider.supports(paymentRequest.method()))
+//                 .findFirst().orElseThrow(
+//                         () -> new RuntimeException("Payment Method not supported yey"));
+//    }
+
+    private void validatePaymentRequest(PaymentRequest paymentRequest) {
+        if (!Objects.equals(paymentRequest.currency(), "XOF")) {
+            throw new RuntimeException("Devise not supported");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.agitex.paymentservice.model;
 
+import com.agitex.paymentservice.dto.PaymentRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "client_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @Column(nullable = false, precision = 19, scale = 2)
@@ -32,6 +33,9 @@ public class Payment {
     @Column(nullable = false, length = 3)
     @Builder.Default
     private String currency = "EUR";
+
+    @Column(unique = true, nullable = false)
+    private String idempotencyKey;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -52,6 +56,19 @@ public class Payment {
     @Column(nullable = false)
     @Builder.Default
     private Instant updatedAt = Instant.now();
+
+    public static Payment of(PaymentRequest paymentRequest) {
+        return Payment.builder()
+                .amount(paymentRequest.amount())
+                .status(PaymentStatus.COMPLETED)
+                .method(paymentRequest.method())
+                .updatedAt(Instant.now())
+                .createdAt(Instant.now())
+                .idempotencyKey(paymentRequest.idempotencyKey())
+                .currency(paymentRequest.currency())
+                .description(paymentRequest.description())
+                .build();
+    }
 
     @PreUpdate
     public void onUpdate() {
