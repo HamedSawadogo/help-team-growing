@@ -1,6 +1,6 @@
 package com.agitex.paymentservice;
 
-import com.agitex.paymentservice.service.*;
+import com.agitex.paymentservice.application.payments.PaymentService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
