@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.payments.domain;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -9,12 +9,16 @@ public class Payment {
     private boolean isActive;
     private boolean isLocked;
     private LocalDate createdDate;
-    private int amount;
-    private String client;
+    private final int amount;
+    private final Client client;
 
-    public static Payment of(int amount) {
-        final Payment payment = new Payment();
-        payment.setAmount(amount);
+    private Payment(int amount, Client client) {
+        this.amount = amount;
+        this.client = client;
+    }
+
+    public static Payment of(int amount, Client client) {
+        final Payment payment = new Payment(amount, client);
         payment.setCreatedDate(LocalDate.now());
         payment.setActive(true);
         payment.setLocked(false);
@@ -64,16 +68,7 @@ public class Payment {
     public int getAmount() {
         return amount;
     }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getClient() {
+    public Client getClient() {
         return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
     }
 }

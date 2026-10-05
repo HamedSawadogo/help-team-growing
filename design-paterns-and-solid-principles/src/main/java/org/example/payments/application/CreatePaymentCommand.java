@@ -1,4 +1,4 @@
-package org.example.application;
+package org.example.payments.application;
 
 import java.util.UUID;
 

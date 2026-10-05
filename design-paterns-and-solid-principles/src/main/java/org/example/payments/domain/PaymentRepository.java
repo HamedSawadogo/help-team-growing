@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.payments.domain;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -6,5 +6,5 @@ import java.util.UUID;
 public interface PaymentRepository {
     Optional<Payment> findByIdempotencyKey(UUID key);
 
-    Payment create(Payment payment);
+    Payment save(Payment payment);
 }

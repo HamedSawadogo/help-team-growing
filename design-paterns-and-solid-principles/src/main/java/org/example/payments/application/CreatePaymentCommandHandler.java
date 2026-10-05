@@ -1,11 +1,11 @@
-package org.example.application;
+package org.example.payments.application;
 
-import org.example.common.CommandHandler;
-import org.example.domain.ClientQueryService;
-import org.example.domain.Payment;
-import org.example.domain.PaymentId;
-import org.example.domain.PaymentRepository;
+import org.example.payments.common.CommandHandler;
+import org.example.payments.domain.*;
+
+import java.lang.runtime.ObjectMethods;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class CreatePaymentCommandHandler implements CommandHandler<CreatePaymentCommand, PaymentId> {
@@ -13,8 +13,10 @@ public class CreatePaymentCommandHandler implements CommandHandler<CreatePayment
     private final PaymentRepository paymentRepository;
     private final ClientQueryService clientQueryService;
 
-    public CreatePaymentCommandHandler(PaymentRepository paymentRepository) {
+    public CreatePaymentCommandHandler(PaymentRepository paymentRepository,
+                                       ClientQueryService clientQueryService) {
         this.paymentRepository = paymentRepository;
+        this.clientQueryService = clientQueryService;
     }
 
     @Override
@@ -24,9 +26,16 @@ public class CreatePaymentCommandHandler implements CommandHandler<CreatePayment
         if (byIdempotencyKey.isPresent()) {
             return byIdempotencyKey.get().getId();
         }
-        resolvePaymentClient(command);
-        Payment newPayment = Payment.of(command.amount());
-        Payment paymentCreated = paymentRepository.create(newPayment);
+
+        final Client client = resolveClient(command.clientId());
+        Payment newPayment = Payment.of(command.amount(), client);
+        Payment paymentCreated = paymentRepository.save(newPayment);
         return paymentCreated.getId();
+    }
+
+    private Client resolveClient(UUID clientId) {
+        return clientQueryService.findById(clientId).orElseThrow(
+                () -> new RuntimeException("Client with id" + clientId + " not found")
+        );
     }
 }

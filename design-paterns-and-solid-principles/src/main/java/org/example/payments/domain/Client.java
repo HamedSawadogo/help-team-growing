@@ -1,9 +1,9 @@
-package org.example.domain;
+package org.example.payments.domain;
 
 import java.util.UUID;
 
 
-public class Client {
+public class Client  {
     private UUID id;
     private String name;
     private boolean isLocked;

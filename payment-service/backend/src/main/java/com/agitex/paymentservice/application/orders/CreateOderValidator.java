@@ -1,9 +1,12 @@
 package com.agitex.paymentservice.application.orders;
 
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CreateOderValidator {
 
-    private static void validate(CreateOrderCommand orderCommand) {
+    public void validate(CreateOrderCommand orderCommand) {
 
         if (orderCommand.items().isEmpty()) {
             throw new RuntimeException("");
