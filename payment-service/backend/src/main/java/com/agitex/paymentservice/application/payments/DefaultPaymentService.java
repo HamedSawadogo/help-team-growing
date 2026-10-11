@@ -1,5 +1,6 @@
 package com.agitex.paymentservice.application.payments;
 
+import com.agitex.paymentservice.application.payments.dtos.PaymentDetails;
 import com.agitex.paymentservice.application.payments.dtos.PaymentRequest;
 import com.agitex.paymentservice.domain.Payment;
 import com.agitex.paymentservice.domain.PaymentMethod;
@@ -15,6 +16,11 @@ public class DefaultPaymentService implements PaymentGateway {
     public Payment pay(PaymentRequest paymentRequest) {
         System.err.println("Default payment.....");
         return Payment.of(paymentRequest);
+    }
+
+    @Override
+    public Payment processPayment(PaymentDetails paymentDetails, Double amount, String currency) {
+        return null;
     }
 
     @Override

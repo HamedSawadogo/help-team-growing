@@ -1,0 +1,72 @@
+<section class="payment-list">
+  <header class="payment-list__header">
+    <div>
+      <h2>Paiements</h2>
+      <p>{{ totalElements() }} transaction{{ totalElements() === 1 ? '' : 's' }}</p>
+    </div>
+  </header>
+
+  <div class="payment-list__scroll" #scrollContainer>
+    @if (loadingInitial()) {
+      @for (skeleton of [1, 2, 3, 4, 5]; track skeleton) {
+        <div class="row row--skeleton">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-lines">
+            <div class="skeleton-line skeleton-line--wide"></div>
+            <div class="skeleton-line skeleton-line--narrow"></div>
+          </div>
+        </div>
+      }
+    } @else if (errorMessage() && payments().length === 0) {
+      <div class="state state--error">
+        <p>{{ errorMessage() }}</p>
+        <button (click)="retry()">Réessayer</button>
+      </div>
+    } @else if (payments().length === 0) {
+      <div class="state state--empty">
+        <span class="state__icon">💳</span>
+        <p>Aucun paiement pour le moment.</p>
+        <p class="state__hint">Les paiements créés apparaîtront ici en direct.</p>
+      </div>
+    } @else {
+      @for (payment of payments(); track trackById($index, payment)) {
+        <article class="row" [class.row--new]="isNew(payment.id)">
+          <div class="row__icon" [attr.data-method]="payment.method">
+            {{ payment.method === 'WAVE' ? '🌊' : '🟠' }}
+          </div>
+
+          <div class="row__main">
+            <div class="row__top">
+              <span class="row__amount">{{ payment.amount | number: '1.0-0' }} {{ payment.currency }}</span>
+              <span class="badge" [attr.data-status]="payment.status">{{ payment.status }}</span>
+            </div>
+            <div class="row__bottom">
+              <span class="row__client">Client #{{ payment.clientId ?? '—' }}</span>
+              @if (payment.description) {
+                <span class="row__dot">•</span>
+                <span class="row__description">{{ payment.description }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="row__meta">
+            <span class="row__date">{{ payment.createdAt | date: 'dd MMM, HH:mm' }}</span>
+            @if (payment.balanceAfter != null) {
+              <span class="row__balance">Solde {{ payment.balanceAfter | number: '1.0-0' }}</span>
+            }
+            <span class="row__id">#{{ payment.id }}</span>
+          </div>
+        </article>
+      }
+
+      <div #sentinel class="sentinel">
+        @if (loadingMore()) {
+          <span class="spinner spinner--muted"></span>
+          <span>Chargement...</span>
+        } @else if (!hasMore()) {
+          <span class="sentinel__end">Fin de la liste</span>
+        }
+      </div>
+    }
+  </div>
+</section>

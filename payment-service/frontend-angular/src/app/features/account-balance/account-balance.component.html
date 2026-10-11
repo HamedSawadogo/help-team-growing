@@ -1,0 +1,14 @@
+<div class="balance-card" [class.pulse]="justUpdated()">
+  <span class="balance-card__label">Solde disponible</span>
+
+  @if (loading()) {
+    <div class="balance-card__skeleton"></div>
+  } @else {
+    <div class="balance-card__value">
+      {{ balance() | number: '1.0-0' }}
+      <span class="balance-card__currency">{{ currency() }}</span>
+    </div>
+  }
+
+  <span class="balance-card__hint">Compte principal · débité à chaque paiement</span>
+</div>

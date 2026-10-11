@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="KubernetesApiPersistence">{}</component>
-  <component name="KubernetesApiProvider">{}</component>
+  <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/payment-service/backend/pom.xml" />
         <option value="$PROJECT_DIR$/design-paterns-and-solid-principles/pom.xml" />
+        <option value="$PROJECT_DIR$/commerceops/backend/pom.xml" />
       </list>
     </option>
   </component>

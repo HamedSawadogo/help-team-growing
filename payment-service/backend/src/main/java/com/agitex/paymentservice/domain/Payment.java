@@ -49,6 +49,9 @@ public class Payment {
     @Column(length = 255)
     private String description;
 
+    @Column(precision = 19, scale = 2)
+    private BigDecimal balanceAfter;
+
     @Column(nullable = false, updatable = false)
     @Builder.Default
     private Instant createdAt = Instant.now();
@@ -65,6 +68,7 @@ public class Payment {
                 .createdAt(Instant.now())
                 .idempotencyKey(paymentRequest.idempotencyKey())
                 .currency(paymentRequest.currency())
+                .method(PaymentMethod.valueOf(paymentRequest.method().name()))
                 .description(paymentRequest.description())
                 .build();
     }

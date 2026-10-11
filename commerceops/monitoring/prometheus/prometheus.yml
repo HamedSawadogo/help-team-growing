@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+scrape_configs:
+  # Prometheus does not expand env vars in its own config file, so these
+  # credentials are plain text here - they must match ADMIN_USER/
+  # ADMIN_PASSWORD in your .env (defaults: admin/admin). If you change the
+  # backend's admin password, update this file too.
+  - job_name: commerceops-backend
+    basic_auth:
+      username: admin
+      password: admin
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["backend:8080"]

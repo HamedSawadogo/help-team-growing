@@ -16,6 +16,7 @@ public record PaymentResponse(
         PaymentMethod method,
         PaymentStatus status,
         String description,
+        BigDecimal balanceAfter,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -29,6 +30,7 @@ public record PaymentResponse(
                 payment.getMethod(),
                 payment.getStatus(),
                 payment.getDescription(),
+                payment.getBalanceAfter(),
                 payment.getCreatedAt(),
                 payment.getUpdatedAt()
         );

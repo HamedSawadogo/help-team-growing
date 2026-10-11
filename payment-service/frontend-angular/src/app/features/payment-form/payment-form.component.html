@@ -1,0 +1,83 @@
+<form class="payment-form" [formGroup]="form" (ngSubmit)="submit()">
+  <header class="payment-form__header">
+    <h2>Nouveau paiement</h2>
+    <p>Encaisse un paiement Wave ou Orange Money en quelques secondes.</p>
+  </header>
+
+  <div class="field">
+    <label for="clientId">ID client <span class="field__optional">(optionnel)</span></label>
+    <input
+      id="clientId"
+      type="number"
+      min="1"
+      placeholder="ex. 42"
+      formControlName="clientId"
+      [class.invalid]="form.controls.clientId.touched && form.controls.clientId.invalid"
+    />
+    @if (form.controls.clientId.touched && form.controls.clientId.invalid) {
+      <span class="field__error">L'identifiant client doit être positif.</span>
+    }
+  </div>
+
+  <div class="field">
+    <label for="amount">Montant (XOF)</label>
+    <div class="amount-input">
+      <span class="amount-input__suffix">XOF</span>
+      <input
+        id="amount"
+        type="number"
+        min="0.01"
+        step="1"
+        placeholder="0"
+        formControlName="amount"
+        [class.invalid]="form.controls.amount.touched && form.controls.amount.invalid"
+      />
+    </div>
+    @if (form.controls.amount.touched && form.controls.amount.invalid) {
+      <span class="field__error">Saisis un montant positif.</span>
+    }
+  </div>
+
+  <div class="field">
+    <label>Moyen de paiement</label>
+    <div class="method-picker">
+      @for (option of methods; track option.value) {
+        <button
+          type="button"
+          class="method-chip"
+          [class.active]="form.controls.method.value === option.value"
+          (click)="selectMethod(option.value)"
+        >
+          <span class="method-chip__icon">{{ option.icon }}</span>
+          {{ option.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="description">Description (optionnel)</label>
+    <input
+      id="description"
+      type="text"
+      placeholder="ex. Facture #1024"
+      formControlName="description"
+      maxlength="255"
+    />
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  }
+
+  <button type="submit" class="submit-btn" [disabled]="submitting()" [class.success]="successPing()">
+    @if (submitting()) {
+      <span class="spinner"></span>
+      Traitement...
+    } @else if (successPing()) {
+      ✓ Paiement créé
+    } @else {
+      Payer
+    }
+  </button>
+</form>

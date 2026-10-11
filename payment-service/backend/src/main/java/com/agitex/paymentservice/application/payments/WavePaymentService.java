@@ -1,6 +1,7 @@
 package com.agitex.paymentservice.application.payments;
 
 import com.agitex.paymentservice.application.payments.dtos.PaymentRequest;
+import com.agitex.paymentservice.application.payments.dtos.WavePaymentDetails;
 import com.agitex.paymentservice.domain.Payment;
 import com.agitex.paymentservice.domain.PaymentMethod;
 import com.agitex.paymentservice.domain.PaymentType;
@@ -9,12 +10,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Qualifier("Wave")
-public class WavePaymentService implements PaymentGateway {
+public class WavePaymentService implements PaymentGateway<WavePaymentDetails> {
 
     @Override
     public Payment pay(PaymentRequest paymentRequest) {
         System.err.println("Payment with Wave");
         return Payment.of(paymentRequest);
+    }
+
+    @Override
+    public Payment processPayment(WavePaymentDetails paymentDetails, Double amount, String currency) {
+        final var accountId = paymentDetails.accountId();
+        final var accountKey= paymentDetails.accountKey();
+
+        System.err.println("Account  " + accountId);
+        System.err.println("Account  Key" + accountKey);
+        return null;
     }
 
     @Override

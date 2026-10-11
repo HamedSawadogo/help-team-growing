@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "orders")
@@ -15,11 +16,15 @@ import java.util.UUID;
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Transient
     private List<OrderItem> items;
 
     public static Order create(List<CreateOrderItem> items) {
         Order order =  new Order();
-        order.setItems(items);
+        order.setItems(items.stream()
+                .map(item -> new OrderItem(item.itemId(), item.price(), true))
+                .collect(Collectors.toList()));
         return order;
     }
 }

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
-
-    private final ClientService clientService;
 //
 //    @PostMapping
 //    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request) {

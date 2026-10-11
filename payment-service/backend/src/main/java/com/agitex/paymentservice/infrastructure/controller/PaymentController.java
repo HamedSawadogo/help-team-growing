@@ -5,6 +5,7 @@ import com.agitex.paymentservice.application.payments.dtos.PaymentResponse;
 import com.agitex.paymentservice.application.payments.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,5 +20,12 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentResponse> createPayment(@Valid @RequestBody PaymentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.makePayment(request));
+    }
+
+    @GetMapping
+    public Page<PaymentResponse> listPayments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return paymentService.listPayments(page, size);
     }
 }

@@ -1,0 +1,61 @@
+.balance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 20px;
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 12px 28px -12px var(--accent-shadow);
+  transition: transform 0.25s ease;
+
+  &.pulse {
+    animation: pop 0.35s ease;
+  }
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+.balance-card__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.balance-card__value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.balance-card__currency {
+  font-size: 1rem;
+  font-weight: 700;
+  opacity: 0.85;
+  margin-left: 0.3rem;
+}
+
+.balance-card__hint {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.balance-card__skeleton {
+  height: 2rem;
+  width: 60%;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.25);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
