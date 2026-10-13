@@ -1,6 +1,10 @@
+package org.cleanarchi.domain;
+
+import java.math.BigDecimal;
+
 // ====================
 // 1. Employee interface
 // ====================
-interface Employee {
+public interface Employee {
     BigDecimal calculateSalary();
 }

@@ -1,3 +1,7 @@
+package org.cleanarchi.application;
+
+import org.cleanarchi.domain.Employee;
+
 /**
  * EmployeeFactory
  */
