@@ -1,4 +1,4 @@
-package org.cleanarchi.application;
+package org.example;
 
 import org.cleanarchi.domain.Employee;
 
