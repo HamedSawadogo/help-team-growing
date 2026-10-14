@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-class CDIEmployee implements Employee {
+public class CDIEmployee implements Employee {
     private String name;
     private LocalDate contractStartedDate;
 

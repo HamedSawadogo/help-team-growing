@@ -1,5 +1,7 @@
-package org.example;
+package org.example.factory;
 
+
+import org.example.EmployeeType;
 
 import java.time.LocalDate;
 

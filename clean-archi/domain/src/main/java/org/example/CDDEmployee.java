@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-class CDDEmployee implements Employee {
+public class CDDEmployee implements Employee {
     private String name;
     private LocalDate contractStartedDate;
     private LocalDate contractEndDate;
