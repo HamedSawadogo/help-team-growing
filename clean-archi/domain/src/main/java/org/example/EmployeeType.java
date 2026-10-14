@@ -1,4 +1,4 @@
-package org.cleanarchi.domain;
+package org.example;
 
 // ====================
 // 4. EmployeeType

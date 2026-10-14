@@ -1,11 +1,14 @@
-package org.cleanarchi.domain;
+package org.example;
 
-import org.cleanarchi.application.CreateEmployeeCommand;
-import org.cleanarchi.application.EmployeeFactory;
 
-public class EmployeeFactoryImpl implements EmployeeFactory {
+import org.example.repositories.EmployeeRepository;
 
-    public Employee create(CreateEmployeeCommand command) {
+import static org.example.EmployeeType.CDD;
+import static org.example.EmployeeType.CDI;
+
+public class EmployeeFactoryImpl implements EmployeeRepository {
+
+    public Employee create(Creat command) {
         return switch (command.type()) {
             case CDI -> new CDIEmployee(command.name(), command.contractStartedDate());
             case CDD -> new CDDEmployee(

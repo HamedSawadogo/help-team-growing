@@ -1,4 +1,4 @@
-package org.cleanarchi.domain;
+package org.example;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

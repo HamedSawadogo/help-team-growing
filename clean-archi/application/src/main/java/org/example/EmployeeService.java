@@ -1,8 +1,6 @@
-package org.cleanarchi.application;
+package org.example;
 
-import org.cleanarchi.domain.Employee;
-import org.cleanarchi.domain.repositories.EmployeeRepository;
-
+import org.example.repositories.EmployeeRepository;
 import java.math.BigDecimal;
 
 public class EmployeeService {

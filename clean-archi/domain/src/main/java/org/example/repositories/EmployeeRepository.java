@@ -1,5 +1,5 @@
-package org.cleanarchi.domain.repositories;
-import org.cleanarchi.domain.Employee;
+package org.example.repositories;
+import org.example.Employee;
 
 public interface EmployeeRepository {
 

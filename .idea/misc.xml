@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/payment-service/backend/pom.xml" />
         <option value="$PROJECT_DIR$/design-paterns-and-solid-principles/pom.xml" />
         <option value="$PROJECT_DIR$/commerceops/backend/pom.xml" />
+        <option value="$PROJECT_DIR$/clean-archi/pom.xml" />
       </list>
     </option>
   </component>

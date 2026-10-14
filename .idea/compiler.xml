@@ -9,6 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="design-paterns-and-solid-principles" />
         <module name="payment-service" />
+        <module name="application" />
+        <module name="domain" />
       </profile>
       <profile name="Annotation profile for commerceops-backend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
