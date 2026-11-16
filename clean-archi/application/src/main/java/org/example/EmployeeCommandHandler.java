@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.factory.CreateEmployeeCommand;
 import org.example.factory.EmployeeFactory;
-import org.example.repositories.EmployeeRepository;
+import org.example.ports.repositories.EmployeeRepository;
 import java.math.BigDecimal;
 
 public class EmployeeCommandHandler {

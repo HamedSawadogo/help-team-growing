@@ -28,6 +28,27 @@ spring:
       name: ${ADMIN_USER:admin}
       password: ${ADMIN_PASSWORD:admin}
 
+#resilience4j
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      backend:
+        # Type de fenêtre pour le calcul du taux d'échec (COUNT_BASED ou TIME_BASED)
+        slidingWindowType: COUNT_BASED
+        # Nombre d'appels à analyser pour décider du changement d'état
+        slidingWindowSize: 10
+        # Nombre minimum d'appels requis avant de pouvoir calculer le taux d'échec
+        minimumNumberOfCalls: 5
+        # Seuil d'échec en pourcentage (ex: 50% d'échecs = ouverture du circuit)
+        failureRateThreshold: 50
+        # Temps (en secondes) pendant lequel le circuit reste OUVERT avant de passer à DEMI-OUVERT
+        waitDurationInOpenState: 10s
+        # Nombre d'appels autorisés en état DEMI-OUVERT pour tester la santé du service distant
+        permittedNumberOfCallsInHalfOpenState: 3
+        # Permet de passer automatiquement de OUVERT à DEMI-OUVERT sans attendre un nouvel appel
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
 management:
   endpoints:
     web:

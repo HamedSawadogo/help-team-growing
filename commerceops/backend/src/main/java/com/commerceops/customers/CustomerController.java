@@ -16,12 +16,12 @@ public class CustomerController {
     }
 
     @GetMapping
-    public Page<CustomerResponse> search(
+    public Object search(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return customerService.search(name, pageable).map(CustomerResponse::from);
+        return customerService.search();
     }
 
     @GetMapping("/{id}")

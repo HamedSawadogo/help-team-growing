@@ -10,7 +10,16 @@
         <option value="$PROJECT_DIR$/design-paterns-and-solid-principles/pom.xml" />
         <option value="$PROJECT_DIR$/commerceops/backend/pom.xml" />
         <option value="$PROJECT_DIR$/clean-archi/pom.xml" />
+        <option value="$PROJECT_DIR$/food-ordering-system/pom.xml" />
+        <option value="$PROJECT_DIR$/microservices/payments-service/pom.xml" />
+        <option value="$PROJECT_DIR$/microservices/common/pom.xml" />
+        <option value="$PROJECT_DIR$/microservices/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/design-paterns-and-solid-principles/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="openjdk-25" project-jdk-type="JavaSDK">

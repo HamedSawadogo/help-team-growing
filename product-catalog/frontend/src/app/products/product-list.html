@@ -1,0 +1,32 @@
+<section class="grid">
+  @for (product of products(); track product.id) {
+    <article class="card">
+      <header>
+        @if (product.category) {
+          <span class="category">{{ product.category.name }}</span>
+        }
+        <span class="price">{{ product.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</span>
+      </header>
+      <h2>{{ product.name }}</h2>
+      <p class="description">{{ product.description }}</p>
+      <ul class="tags">
+        @for (tag of product.tags; track tag.id) {
+          <li>#{{ tag.name }}</li>
+        }
+      </ul>
+      <footer>Ajouté le {{ product.createdAt | date:'dd/MM/yyyy' }}</footer>
+    </article>
+  }
+</section>
+
+<div #sentinel class="sentinel"></div>
+
+<div class="status">
+  @if (loading()) {
+    <span class="spinner"></span> Chargement…
+  } @else if (error()) {
+    {{ error() }} <button (click)="loadMore()">Réessayer</button>
+  } @else if (!hasNext()) {
+    {{ products().length }} produits — fin de la liste
+  }
+</div>

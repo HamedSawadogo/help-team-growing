@@ -1,4 +1,4 @@
-package org.example.repositories;
+package org.example.ports.repositories;
 import org.example.Employee;
 
 public interface EmployeeRepository {
