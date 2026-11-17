@@ -8,7 +8,9 @@ export class ProductService {
   private readonly http = inject(HttpClient);
 
   getPage(page: number, size: number): Observable<ProductPage> {
+
     const params = new HttpParams().set('page', page).set('size', size);
+
     return this.http.get<ProductPage>('/api/products', { params });
   }
 }
