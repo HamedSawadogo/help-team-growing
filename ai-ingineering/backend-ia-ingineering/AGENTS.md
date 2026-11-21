@@ -3,45 +3,7 @@
 ## Project Overview
 This is a Java 21 / Spring Boot backend application.
 
-Read the following documents before making significant changes:
-
-- .ai/context/business-context.md
-- .ai/context/architecture-overview.md
-- .ai/context/domain-glossary.md
-- .ai/instructions/architecture.md
-- .ai/instructions/java.md
-
-## Architecture Rules
-
-- Follow Hexagonal Architecture.
-- Keep business logic independent from infrastructure.
-- Respect bounded contexts and module boundaries.
-- Avoid unnecessary abstractions.
-- Do not introduce microservices without justification.
-- Use dependency inversion.
-
-## Java Rules
-
-- Use constructor injection.
-- Prefer immutable objects.
-- Avoid exposing JPA entities through REST APIs.
-- Use explicit transaction boundaries.
-- Avoid business logic inside controllers.
-
-## Testing Rules
-
-- Every business rule must be tested.
-- Write unit tests for domain logic.
-- Write integration tests for persistence.
-- Use Testcontainers when appropriate.
-- Never remove tests simply to make the build pass.
-
-## Security Rules
-
-- Never hardcode secrets.
-- Validate external inputs.
-- Never log sensitive information.
-- Check authorization at the appropriate boundary.
+ Read the applicable rules from `.ai/rules/`.
 
 ## Development Workflow
 
