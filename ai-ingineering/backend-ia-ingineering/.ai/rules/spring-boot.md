@@ -72,28 +72,45 @@ public class GlobalExceptionHandler {
   (`@Version` sur l'entité JPA) plutôt qu'un verrou pessimiste, plus coûteux.
 
 - Écrire des logs en cas d'erreur et de warning, avec un niveau adapté (voir
-  [Observabilité](#observabilité)) — jamais de `System.out.println`.
+  [Observabilité](engineering.md#observabilité)) — jamais de `System.out.println`.
 
 
 - **Injection par constructeur uniquement**, jamais de `@Autowired` sur un champ.
   Cela rend les dépendances explicites et facilite les tests unitaires (pas besoin de
   Spring pour instancier la classe).
+- Le constructeur n'est **pas écrit à la main** : on utilise `@RequiredArgsConstructor`
+  (Lombok), qui génère un constructeur avec tous les champs `private final`. Les
+  classes restent courtes et lisibles, et l'ajout d'une dépendance se limite à
+  déclarer un nouveau champ `final`.
 
+  ```java
+  @Service
+  @RequiredArgsConstructor
+  public class CreateOrderService implements CreateOrderUseCase {
+      private final OrderRepository orderRepository;
+      private final DomainEventPublisher eventPublisher;
+  }
+  ```
 
+  ❌ **À éviter** :
 
   ```java
   @Service
   public class CreateOrderService implements CreateOrderUseCase {
-      private final OrderRepository orderRepository;
-      private final DomainEventPublisher eventPublisher;
-
-      public CreateOrderService(OrderRepository orderRepository,
-                                 DomainEventPublisher eventPublisher) {
-          this.orderRepository = orderRepository;
-          this.eventPublisher = eventPublisher;
-      }
+      @Autowired
+      private OrderRepository orderRepository;
   }
   ```
+
+  Règles d'usage :
+
+  - Toutes les dépendances injectées doivent être `private final`, sinon elles ne
+    sont pas incluses dans le constructeur généré (et restent `null`).
+  - `@RequiredArgsConstructor` est réservé aux couches `application` et
+    `infrastructure` (services, controllers, adapters, listeners). Le `domain` reste
+    en **Java pur, sans Lombok** (voir `architecture.md`).
+  - Si le constructeur doit contenir de la logique (validation, valeur par défaut,
+    `@Qualifier` sur un paramètre), on écrit le constructeur explicitement.
 
 - La configuration (URLs, timeouts, feature flags) passe par `@ConfigurationProperties`
   typées, jamais par des `@Value("${...}")` éparpillés dans le code métier.

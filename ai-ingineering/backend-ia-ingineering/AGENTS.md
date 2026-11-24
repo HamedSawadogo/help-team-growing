@@ -1,9 +1,10 @@
 # AGENTS.md
 
 ## Project Overview
+
 This is a Java 21 / Spring Boot backend application.
 
- Read the applicable rules from `.ai/rules/`.
+Read the applicable rules from `.ai/rules/`.
 
 ## Development Workflow
 
